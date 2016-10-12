@@ -175,7 +175,8 @@ type flag = [
 ]
 
 let pp_error fmt e =
-  Format.pp_print_string fmt (match e with `Unsupported -> "Unsupported")
+  Format.pp_print_string fmt @@
+  match e with `Unsupported -> "Unsupported"
 
 let pp_vendor fmt v =
   Format.pp_print_string fmt @@

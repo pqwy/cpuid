@@ -2,7 +2,7 @@
 
 %%VERSION%%
 
-`cpuid` allows detection of CPU features from OCaml.
+cpuid allows detection of CPU features from OCaml.
 
 cpuid is distributed under the ISC license.
 
