@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<link rel="Start" href="index.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Cpuid" rel="Chapter" href="Cpuid.html"><link title="Overview" rel="Section" href="#1_Overview">
+<link title="Cpuid" rel="Section" href="#1_Cpuid">
+<link title="Limitations" rel="Subsection" href="#2_Limitations">
+<link title="Queries" rel="Subsection" href="#2_Queries">
+<title>Cpuid</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Cpuid.html">Cpuid</a></h1>
+
+<pre><span class="keyword">module</span> Cpuid: <code class="code"><span class="keyword">sig</span></code> <a href="Cpuid.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+Detect CPU features.
+<p>
+
+    <em>v0.0.1 — <a href="https://github.com/pqwy/cpuid ">homepage</a></em><br>
+</div>
+<hr width="100%">
+<br>
+<h1 id="1_Overview">Overview</h1>
+<p>
+
+    Cpuid provides runtime detection of CPU features through the x86 <b>CPUID</b>
+    instruction. Detection discovers the CPU <a href="Cpuid.html#VALvendor"><code class="code">vendor</code></a> and a set of
+    feature <a href="Cpuid.html#TYPEflag"><code class="code">flag</code></a>s.
+<p>
+
+    The flag names reflect the Linux
+    <a href="https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/arch/x86/include/asm/cpufeatures.h?id=c8d2bc9bc39ebea8437fd974fdbc21847bb897a3">convention</a>,
+    except in uppercase. Only the features reported by the CPU are included
+    (i.e. there are no synthetic flags).
+<p>
+
+    <h2 id="2_Limitations">Limitations</h2>
+<p>
+
+    Cpuid currently relies on an x86-specific feature. The library runs on ARM
+    processors, but calls return an <a href="Cpuid.html#TYPEerror"><code class="code">error</code></a>.
+<p>
+
+    The only consulted CPUID-leaves are <code class="code">0x00000001</code>, <code class="code">0x00000007:0</code> and
+    <code class="code">0x80000001</code>. Hence, the reported features are a subset of what Linux would
+    report.<br>
+<br>
+<h1 id="1_Cpuid">Cpuid</h1><br>
+
+<pre><span id="TYPEerror"><span class="keyword">type</span> <code class="type"></code>error</span> = <code class="type">[ `Unsupported ]</code> </pre>
+
+
+<pre><span id="TYPEresult"><span class="keyword">type</span> <code class="type">'a</code> result</span> = <code class="type">('a, <a href="Cpuid.html#TYPEerror">error</a>) Result.result</code> </pre>
+
+
+<pre><span id="TYPEvendor"><span class="keyword">type</span> <code class="type"></code>vendor</span> = <code class="type">[ `AMD<br>       | `Centaur<br>       | `Cyrix<br>       | `Hyper_V<br>       | `Intel<br>       | `KVM<br>       | `NSC<br>       | `NexGen<br>       | `Parallels<br>       | `Rise<br>       | `SiS<br>       | `Transmeta<br>       | `UMC<br>       | `UNKNOWN<br>       | `VIA<br>       | `VMware<br>       | `Vortex<br>       | `Xen ]</code> </pre>
+<div class="info ">
+The CPU manufacturer, the type of virtual environment, or <code class="code"><span class="keywordsign">`</span><span class="constructor">UNKNOWN</span></code>.<br>
+</div>
+
+
+<pre><span id="TYPEflag"><span class="keyword">type</span> <code class="type"></code>flag</span> = <code class="type">[ `ABM<br>       | `ACPI<br>       | `ADX<br>       | `AES<br>       | `APIC<br>       | `AVX<br>       | `AVX2<br>       | `AVX512BW<br>       | `AVX512CD<br>       | `AVX512DQ<br>       | `AVX512ER<br>       | `AVX512F<br>       | `AVX512PF<br>       | `AVX512VL<br>       | `BMI1<br>       | `BMI2<br>       | `BPEXT<br>       | `CID<br>       | `CLFLUSH<br>       | `CLFLUSHOPT<br>       | `CLWB<br>       | `CMOV<br>       | `CMP_LEGACY<br>       | `CQM<br>       | `CR8_LEGACY<br>       | `CX16<br>       | `CX8<br>       | `DCA<br>       | `DE<br>       | `DS_CPL<br>       | `DTES64<br>       | `DTS<br>       | `ERMS<br>       | `EST<br>       | `EXTAPIC<br>       | `F16C<br>       | `FMA<br>       | `FMA4<br>       | `FPU<br>       | `FSGSBASE<br>       | `FXSR<br>       | `FXSR_OPT<br>       | `F_3DNOW<br>       | `F_3DNOWEXT<br>       | `F_3DNOWPREFETCH<br>       | `HLE<br>       | `HT<br>       | `HYPERVISOR<br>       | `IA64<br>       | `IBS<br>       | `INVPCID<br>       | `LAHF_LM<br>       | `LM<br>       | `LWP<br>       | `MCA<br>       | `MCE<br>       | `MISALIGNSSE<br>       | `MMX<br>       | `MMXEXT<br>       | `MONITOR<br>       | `MOVBE<br>       | `MP<br>       | `MPX<br>       | `MSR<br>       | `MTRR<br>       | `MWAITX<br>       | `NODEID_MSR<br>       | `NX<br>       | `OSPKE<br>       | `OSVW<br>       | `OSXSAVE<br>       | `PAE<br>       | `PAT<br>       | `PBE<br>       | `PCID<br>       | `PCLMULQDQ<br>       | `PDCM<br>       | `PDPE1GB<br>       | `PERFCTR_CORE<br>       | `PERFCTR_L2<br>       | `PERFCTR_NB<br>       | `PGE<br>       | `PKU<br>       | `PN<br>       | `PNI<br>       | `POPCNT<br>       | `PSE<br>       | `PSE36<br>       | `PTSC<br>       | `RDRAND<br>       | `RDSEED<br>       | `RDTSCP<br>       | `RTM<br>       | `SDBG<br>       | `SEP<br>       | `SHA_NI<br>       | `SKINIT<br>       | `SMAP<br>       | `SMEP<br>       | `SMX<br>       | `SS<br>       | `SSE<br>       | `SSE2<br>       | `SSE4A<br>       | `SSE4_1<br>       | `SSE4_2<br>       | `SSSE3<br>       | `SVM<br>       | `SYSCALL<br>       | `TBM<br>       | `TCE<br>       | `TM<br>       | `TM2<br>       | `TOPOEXT<br>       | `TSC<br>       | `TSC_ADJUST<br>       | `TSC_DEADLINE_TIMER<br>       | `VME<br>       | `VMX<br>       | `WDT<br>       | `X2APIC<br>       | `XOP<br>       | `XSAVE<br>       | `XTPR ]</code> </pre>
+<div class="info ">
+CPU flags signify presence of individual features.
+<p>
+
+    Consult the interface file for the meaning of individual flags.<br>
+</div>
+
+
+<pre><span id="VALpp_error"><span class="keyword">val</span> pp_error</span> : <code class="type">Format.formatter -> <a href="Cpuid.html#TYPEerror">error</a> -> unit</code></pre><div class="info ">
+<code class="code">pp_error ppf e</code> formats the <a href="Cpuid.html#TYPEerror"><code class="code">error</code></a> <code class="code">e</code> to the formatter <code class="code">ppf</code>.<br>
+</div>
+
+<pre><span id="VALpp_vendor"><span class="keyword">val</span> pp_vendor</span> : <code class="type">Format.formatter -> <a href="Cpuid.html#TYPEvendor">vendor</a> -> unit</code></pre><div class="info ">
+<code class="code">pp_vendor ppf v</code> formats the <a href="Cpuid.html#VALvendor"><code class="code">vendor</code></a> <code class="code">v</code> to the formatter <code class="code">ppf</code>.<br>
+</div>
+
+<pre><span id="VALpp_flag"><span class="keyword">val</span> pp_flag</span> : <code class="type">Format.formatter -> <a href="Cpuid.html#TYPEflag">flag</a> -> unit</code></pre><div class="info ">
+<code class="code">pp_flag ppf f</code> formats the <a href="Cpuid.html#TYPEflag"><code class="code">flag</code></a> <code class="code">f</code> to the formatter <code class="code">ppf</code>.<br>
+</div>
+<br>
+<h2 id="2_Queries">Queries</h2><br>
+
+<pre><span id="VALvendor"><span class="keyword">val</span> vendor</span> : <code class="type">unit -> <a href="Cpuid.html#TYPEvendor">vendor</a> <a href="Cpuid.html#TYPEresult">result</a></code></pre><div class="info ">
+<code class="code">vendor ()</code> is the CPU <a href="Cpuid.html#VALvendor"><code class="code"><span class="constructor">Cpuid</span>.vendor</code></a>, or an <code class="code">error</code>.<br>
+</div>
+
+<pre><span id="VALflags"><span class="keyword">val</span> flags</span> : <code class="type">unit -> <a href="Cpuid.html#TYPEflag">flag</a> list <a href="Cpuid.html#TYPEresult">result</a></code></pre><div class="info ">
+<code class="code">flags ()</code> is the list of CPU <a href="Cpuid.html#TYPEflag"><code class="code"><span class="constructor">Cpuid</span>.flag</code></a>s, or an <code class="code">error</code>.<br>
+</div>
+
+<pre><span id="VALsupports"><span class="keyword">val</span> supports</span> : <code class="type"><a href="Cpuid.html#TYPEflag">flag</a> list -> bool <a href="Cpuid.html#TYPEresult">result</a></code></pre><div class="info ">
+<code class="code">supports fs</code> is <code class="code"><span class="keyword">true</span></code> iff all <code class="code">fs</code> are in <code class="code">flags ()</code>.<br>
+</div>
+</body></html>
