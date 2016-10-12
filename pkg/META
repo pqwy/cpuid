@@ -1,0 +1,7 @@
+description = "Detect CPU features"
+version = "%%VERSION%%"
+requires = ""
+archive(byte) = "cpuid.cma"
+archive(native) = "cpuid.cmxa"
+plugin(byte) = "cpuid.cma"
+plugin(native) = "cpuid.cmxs"
