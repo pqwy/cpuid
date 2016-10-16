@@ -12,6 +12,7 @@ depends: [
   "ocamlfind" {build}
   "ocamlbuild" {build & >="0.9.3"}
   "topkg" {build}
+  "ocb-stubblr" {build}
   "result" ]
 depopts: []
 build: [ "ocaml" "pkg/pkg.ml" "build" "--pinned" pinned ]
