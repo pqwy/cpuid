@@ -1,4 +1,4 @@
-## cpuid — Detect CPU features
+# cpuid — Detect CPU features
 
 %%VERSION%%
 

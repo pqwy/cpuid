@@ -1,5 +1,5 @@
 description = "Detect CPU features"
-version = "%%VERSION%%"
+version = "%%VERSION_NUM%%"
 requires = ""
 archive(byte) = "cpuid.cma"
 archive(native) = "cpuid.cmxa"
