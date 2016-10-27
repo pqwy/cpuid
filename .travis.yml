@@ -1,0 +1,13 @@
+language: c
+install: wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-opam.sh
+script: bash -ex .travis-opam.sh
+sudo: required
+env:
+  global:
+    - PACKAGE="cpuid"
+    - PINS="ocb-stubblr:git://github.com/pqwy/ocb-stubblr.git"
+  matrix:
+    - OCAML_VERSION=4.02
+    - OCAML_VERSION=4.03
+notifications:
+  email: false

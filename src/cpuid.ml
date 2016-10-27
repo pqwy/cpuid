@@ -516,7 +516,8 @@ let id () =
       Some (v, f)
 
 let _id = lazy (id ())
-let q f = match Lazy.force _id with Some id -> Ok (f id) | _ -> Error `Unsupported
+let q f = match Lazy.force _id with
+  Some id -> Result.Ok (f id) | _ -> Error `Unsupported
 
 let vendor () = q fst
 let flags () = q (fun (_, fs) -> FlagS.elements fs)

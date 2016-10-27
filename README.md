@@ -24,13 +24,4 @@ distribution.
 
 [doc]: https://pqwy.github.io/cpuid/doc
 
-## Sample programs
-
-If you installed cpuid with `opam` sample programs are located in
-the directory `opam config var cpuid:doc`.
-
-In the distribution sample programs and tests are located in the
-[`test`](test) directory of the distribution. They can be built and run
-with:
-
-    topkg build --tests true && topkg test 
+[![Build Status](https://travis-ci.org/pqwy/cpuid.svg?branch=master)](https://travis-ci.org/pqwy/cpuid)
