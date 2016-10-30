@@ -5,9 +5,10 @@ sudo: required
 env:
   global:
     - PACKAGE="cpuid"
-    - PINS="ocb-stubblr:git://github.com/pqwy/ocb-stubblr.git"
   matrix:
+    - OCAML_VERSION=4.01
     - OCAML_VERSION=4.02
     - OCAML_VERSION=4.03
+    - OCAML_VERSION=4.04
 notifications:
   email: false

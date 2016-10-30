@@ -7,12 +7,12 @@ license: "ISC"
 dev-repo: "https://github.com/pqwy/cpuid.git"
 bug-reports: "https://github.com/pqwy/cpuid/issues"
 tags: []
-available: [ ocaml-version >= "4.02.0"]
+available: [ ocaml-version >= "4.01.0" ]
 depends: [
   "ocamlfind" {build}
   "ocamlbuild" {build}
   "topkg" {build}
-  "ocb-stubblr" {build}
+  "ocb-stubblr" {build & >= "0.1.0"}
   "result" ]
 depopts: []
 build: [ "ocaml" "pkg/pkg.ml" "build" "--pinned" "%{pinned}%" "--tests" "false" ]
