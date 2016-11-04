@@ -10,7 +10,7 @@
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Cpuid" rel="Chapter" href="Cpuid.html"><link title="Overview" rel="Section" href="#1_Overview">
 <link title="Cpuid" rel="Section" href="#1_Cpuid">
-<link title="Limitations" rel="Subsection" href="#2_Limitations">
+<link title="Limitations" rel="Subsection" href="#lim">
 <link title="Queries" rel="Subsection" href="#2_Queries">
 <title>Cpuid</title>
 </head>
@@ -23,7 +23,7 @@
 Detect CPU features.
 <p>
 
-    <em>v0.0.1 — <a href="https://github.com/pqwy/cpuid ">homepage</a></em><br>
+    <em>v0.1.0 — <a href="https://github.com/pqwy/cpuid ">homepage</a></em><br>
 </div>
 <hr width="100%">
 <br>
@@ -41,16 +41,20 @@ Detect CPU features.
     (i.e. there are no synthetic flags).
 <p>
 
-    <h2 id="2_Limitations">Limitations</h2>
+    <h2 id="lim">Limitations</h2>
 <p>
 
     Cpuid currently relies on an x86-specific feature. The library runs on ARM
     processors, but calls return an <a href="Cpuid.html#TYPEerror"><code class="code">error</code></a>.
 <p>
 
-    The only consulted CPUID-leaves are <code class="code">0x00000001</code>, <code class="code">0x00000007:0</code> and
-    <code class="code">0x80000001</code>. Hence, the reported features are a subset of what Linux would
-    report.<br>
+    The only CPUID-leaves consulted for <a href="Cpuid.html#VALflags">feature flags</a> are <code class="code">0x1</code>,
+    <code class="code">0x7:0</code> and <code class="code">0x80000001</code>. Hence, the reported features are a subset
+    of what Linux would report.
+<p>
+
+    Number of <a href="Cpuid.html#VALcores">cores</a> is CPUID <code class="code">0xb:1</code> <code class="code"><span class="constructor">EBX</span></code>. This only works on Intel
+    CPUs after around 2010, and fails under virtualization.<br>
 <br>
 <h1 id="1_Cpuid">Cpuid</h1><br>
 
@@ -93,11 +97,23 @@ CPU flags signify presence of individual features.
 <code class="code">vendor ()</code> is the CPU <a href="Cpuid.html#VALvendor"><code class="code"><span class="constructor">Cpuid</span>.vendor</code></a>, or an <code class="code">error</code>.<br>
 </div>
 
+<pre><span id="VALmodel"><span class="keyword">val</span> model</span> : <code class="type">unit -> (int * int * int) <a href="Cpuid.html#TYPEresult">result</a></code></pre><div class="info ">
+<code class="code">model ()</code> is the CPU's <em>family</em>, <em>model</em> and <em>stepping</em>, or an
+    <code class="code">error</code>.<br>
+</div>
+
 <pre><span id="VALflags"><span class="keyword">val</span> flags</span> : <code class="type">unit -> <a href="Cpuid.html#TYPEflag">flag</a> list <a href="Cpuid.html#TYPEresult">result</a></code></pre><div class="info ">
 <code class="code">flags ()</code> is the list of CPU <a href="Cpuid.html#TYPEflag"><code class="code"><span class="constructor">Cpuid</span>.flag</code></a>s, or an <code class="code">error</code>.<br>
 </div>
 
 <pre><span id="VALsupports"><span class="keyword">val</span> supports</span> : <code class="type"><a href="Cpuid.html#TYPEflag">flag</a> list -> bool <a href="Cpuid.html#TYPEresult">result</a></code></pre><div class="info ">
 <code class="code">supports fs</code> is <code class="code"><span class="keyword">true</span></code> iff all <code class="code">fs</code> are in <code class="code">flags ()</code>.<br>
+</div>
+
+<pre><span id="VALcores"><span class="keyword">val</span> cores</span> : <code class="type">unit -> int <a href="Cpuid.html#TYPEresult">result</a></code></pre><div class="info ">
+<code class="code">cores ()</code> is the number of available logical cores.
+<p>
+
+    <b>Note</b> Do not take <code class="code">cores ()</code> too seriously. See <a href="Cpuid.html#lim">limitations</a>.<br>
 </div>
 </body></html>

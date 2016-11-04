@@ -159,6 +159,8 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pp_vendor&nbsp;:&nbsp;<span class="constructor">Format</span>.formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cpuid</span>.vendor&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;pp_flag&nbsp;:&nbsp;<span class="constructor">Format</span>.formatter&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cpuid</span>.flag&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;vendor&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cpuid</span>.vendor&nbsp;<span class="constructor">Cpuid</span>.result
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;model&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(int&nbsp;*&nbsp;int&nbsp;*&nbsp;int)&nbsp;<span class="constructor">Cpuid</span>.result
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;flags&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Cpuid</span>.flag&nbsp;list&nbsp;<span class="constructor">Cpuid</span>.result
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;supports&nbsp;:&nbsp;<span class="constructor">Cpuid</span>.flag&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool&nbsp;<span class="constructor">Cpuid</span>.result
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;cores&nbsp;:&nbsp;unit&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="constructor">Cpuid</span>.result
 <span class="keyword">end</span></code></body></html>
