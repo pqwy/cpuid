@@ -8,6 +8,7 @@ type raw = {
   l1_edx : int32;
   l7_ebx : int32;
   l7_ecx : int32;
+  l12_ebx : int32;
   l1e_ecx : int32;
   l1e_edx : int32;
 }
@@ -184,6 +185,7 @@ type id = {
   vendor : vendor;
   model  : int * int * int;
   flags  : FlagS.t;
+  cores  : int;
 }
 
 let pp_error fmt e =
@@ -524,6 +526,12 @@ let fms eax =
   and stepping = r land 0xf in
   (family, model, stepping)
 
+let cores _ reg = Int32.to_int reg
+(* This works with Intel after 2010, status unknown otherwise.
+   God's own official dox at
+   https://stackoverflow.com/questions/24088837/logical-cpu-count-return-16-instead-of-4/24704156#24704156 *)
+(* match vendor with | `Intel -> Int32.to_int reg | _ -> -1 *)
+
 let id () =
   match cpudetect_raw () with
   | None -> None
@@ -534,7 +542,8 @@ let id () =
         fl l1_ecx_f raw.l1_ecx @@ fl l1e_ecx_f raw.l1e_ecx @@
         fl l7_ebx_f raw.l7_ebx @@ fl l7_ecx_f raw.l7_ecx FlagS.empty
       and model = fms raw.l1_eax in
-      Some { vendor; model; flags }
+      let cores = cores vendor raw.l12_ebx in
+      Some { vendor; model; flags; cores }
 
 let _id = lazy (id ())
 let q f = match Lazy.force _id with
@@ -545,3 +554,4 @@ let model () = q @@ fun id -> id.model
 let flags () = q @@ fun id -> FlagS.elements id.flags
 let supports qfs = q @@ fun id ->
   List.for_all (fun qf -> FlagS.mem qf id.flags) qfs
+let cores () = q @@ fun id -> id.cores

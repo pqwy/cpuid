@@ -16,14 +16,17 @@
     except in uppercase. Only the features reported by the CPU are included
     (i.e. there are no synthetic flags).
 
-    {2 Limitations}
+    {2:lim Limitations}
 
     Cpuid currently relies on an x86-specific feature. The library runs on ARM
     processors, but calls return an {{!error}[error]}.
 
-    The only consulted CPUID-leaves are [0x00000001], [0x00000007:0] and
-    [0x80000001]. Hence, the reported features are a subset of what Linux would
-    report. *)
+    The only CPUID-leaves consulted for {{!flags}feature flags} are [0x1],
+    [0x7:0] and [0x80000001]. Hence, the reported features are a subset
+    of what Linux would report.
+
+    Number of {{!cores}cores} is CPUID [0xb:1] [EBX]. This only works on Intel
+    CPUs after around 2010, and fails under virtualization. *)
 
 (** {1 Cpuid} *)
 
@@ -215,3 +218,8 @@ val flags : unit -> flag list result
 
 val supports : flag list -> bool result
 (** [supports fs] is [true] iff all [fs] are in [flags ()].*)
+
+val cores : unit -> int result
+(** [cores ()] is the number of available logical cores.
+
+    {b Note} Do not take [cores ()] too seriously. See {{!lim}limitations}. *)

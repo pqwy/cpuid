@@ -20,6 +20,8 @@ let () =
     (model () >>| fun (f, m, s) ->
       Format.printf "family: %d\nmodel: %d\nstepping: %d\n%!" f m s)
     >>= fun () ->
+    (cores () >>| Format.printf "cores: %d\n%!")
+    >>= fun () ->
     (flags () >>| Format.printf "flags: %a\n%!" (pp_list pp_flag))
   in match pr with Ok () -> ()
   | Error e -> Format.printf "Error: %a\n%!" pp_error e
