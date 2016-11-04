@@ -206,6 +206,10 @@ val pp_flag : Format.formatter -> flag -> unit
 val vendor : unit -> vendor result
 (** [vendor ()] is the CPU {!vendor}, or an [error]. *)
 
+val model : unit -> (int * int * int) result
+(** [model ()] is the CPU's {e family}, {e model} and {e stepping}, or an
+    [error]. *)
+
 val flags : unit -> flag list result
 (** [flags ()] is the list of CPU {!flag}s, or an [error]. *)
 

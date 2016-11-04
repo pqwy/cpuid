@@ -3,6 +3,7 @@
 
 type raw = {
   sign : int32;
+  l1_eax : int32;
   l1_ecx : int32;
   l1_edx : int32;
   l7_ebx : int32;
@@ -173,6 +174,17 @@ type flag = [
   | `PKU                (** Protection Keys for Userspace *)
   | `OSPKE              (** OS Protection Keys Enable *)
 ]
+
+module FlagS = Set.Make (struct
+  type t = flag
+  let compare (a : flag) b = compare a b
+end)
+
+type id = {
+  vendor : vendor;
+  model  : int * int * int;
+  flags  : FlagS.t;
+}
 
 let pp_error fmt e =
   Format.pp_print_string fmt @@
@@ -491,13 +503,8 @@ let l7_ecx_f = function
   | 4 -> `OSPKE
   | _ -> `Nothing
 
-module FlagS = Set.Make (struct
-  type t = flag
-  let compare (a : flag) b = compare a b
-end)
-
 let bit x i = Int32.(shift_right_logical x i |> to_int) land 1 = 1
-let dec f reg s =
+let fl f reg s =
   let rec go s = function
     | 32 -> s
     | i when bit reg i ->
@@ -505,20 +512,36 @@ let dec f reg s =
     | i -> go s (succ i) in
   go s 0
 
+let fms eax =
+  let r = Int32.to_int eax in
+  let family =
+    match (r lsr 8) land 0xf with
+    | 0xf -> 0xf + ((r lsr 20) land 0xff)
+    | x   -> x in
+  let model =
+    (r lsr 4) land 0xf +
+      if family >= 6 then ((r lsr 16) land 0xf) lsl 4 else 0
+  and stepping = r land 0xf in
+  (family, model, stepping)
+
 let id () =
   match cpudetect_raw () with
   | None -> None
   | Some raw ->
-      let v = vendor_of_sig_ebx raw.sign
-      and f = dec l1_edx_f raw.l1_edx @@ dec l1e_edx_f raw.l1e_edx @@
-              dec l1_ecx_f raw.l1_ecx @@ dec l1e_ecx_f raw.l1e_ecx @@
-              dec l7_ebx_f raw.l7_ebx @@ dec l7_ecx_f raw.l7_ecx FlagS.empty in
-      Some (v, f)
+      let vendor = vendor_of_sig_ebx raw.sign
+      and flags =
+        fl l1_edx_f raw.l1_edx @@ fl l1e_edx_f raw.l1e_edx @@
+        fl l1_ecx_f raw.l1_ecx @@ fl l1e_ecx_f raw.l1e_ecx @@
+        fl l7_ebx_f raw.l7_ebx @@ fl l7_ecx_f raw.l7_ecx FlagS.empty
+      and model = fms raw.l1_eax in
+      Some { vendor; model; flags }
 
 let _id = lazy (id ())
 let q f = match Lazy.force _id with
   Some id -> Result.Ok (f id) | _ -> Error `Unsupported
 
-let vendor () = q fst
-let flags () = q (fun (_, fs) -> FlagS.elements fs)
-let supports qfs = q (fun (_, fs) -> List.for_all (fun qf -> FlagS.mem qf fs) qfs)
+let vendor () = q @@ fun id -> id.vendor
+let model () = q @@ fun id -> id.model
+let flags () = q @@ fun id -> FlagS.elements id.flags
+let supports qfs = q @@ fun id ->
+  List.for_all (fun qf -> FlagS.mem qf id.flags) qfs

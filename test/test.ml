@@ -4,19 +4,22 @@
 open Result
 open Cpuid
 
-let pp_list pp ppf = function
-  | []    -> Format.pp_print_string ppf "[]"
-  | [x]   -> Format.fprintf ppf "[%a]" pp x
-  | x::xs -> Format.fprintf ppf "[@[%a%a@]]" pp x
-              (fun _ -> List.iter (Format.fprintf ppf ";@ %a" pp)) xs
+let pp_list pp ppf = Format.(function
+  | []    -> pp_print_string ppf "[]"
+  | [x]   -> fprintf ppf "[%a]" pp x
+  | x::xs -> fprintf ppf "@[%a%a@]" pp x
+              (fun _ -> List.iter (fprintf ppf "@ %a" pp)) xs)
 
 let (>>=) r k = match r with Ok x -> k x | Error e -> Error e
+let (>>|) r k = r >>= fun x -> Ok (k x)
 
 let () =
-  match
-    vendor () >>= fun v -> flags () >>= fun fs -> Ok (v, fs)
-  with
-  | Ok (v, fs) ->
-      Format.printf "Vendor: %a@;Flags: %a\n%!"
-      pp_vendor v (pp_list pp_flag) fs
+  let pr =
+    (vendor () >>| Format.printf "vendor: %a\n%!" pp_vendor)
+    >>= fun () ->
+    (model () >>| fun (f, m, s) ->
+      Format.printf "family: %d\nmodel: %d\nstepping: %d\n%!" f m s)
+    >>= fun () ->
+    (flags () >>| Format.printf "flags: %a\n%!" (pp_list pp_flag))
+  in match pr with Ok () -> ()
   | Error e -> Format.printf "Error: %a\n%!" pp_error e
