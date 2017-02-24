@@ -9,7 +9,7 @@
 #define __x86__
 #if __GNUC__ == 4 && __GNUC_MINOR__ > 3
 #include <x86intrin.h>
-#endif /* __OpenBSD__ */
+#endif /* __GNUC__ == 4 && __GNUC_MINOR__ > 3 */
 #include <cpuid.h>
 #endif /* __i386__ || __x86_64__ */
 
