@@ -7,7 +7,6 @@
 
 #if defined (__i386__) || defined (__x86_64__)
 #define __x86__
-#include <x86intrin.h>
 #include <cpuid.h>
 #endif /* __i386__ || __x86_64__ */
 
