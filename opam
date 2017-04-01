@@ -8,11 +8,12 @@ dev-repo: "https://github.com/pqwy/cpuid.git"
 bug-reports: "https://github.com/pqwy/cpuid/issues"
 tags: []
 available: [ ocaml-version >= "4.01.0" ]
+build: [ "ocaml" "pkg/pkg.ml" "build" "--pinned" "%{pinned}%" "--tests" "false" ]
 depends: [
   "ocamlfind" {build}
   "ocamlbuild" {build}
   "topkg" {build}
-  "ocb-stubblr" {build & >= "0.1.0"}
+  "ocb-stubblr" {build}
   "result" ]
 depopts: []
-build: [ "ocaml" "pkg/pkg.ml" "build" "--pinned" "%{pinned}%" "--tests" "false" ]
+conflicts: [ "ocb-stubblr" {<"0.1.0"} ]
