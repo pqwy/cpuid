@@ -1,4 +1,4 @@
-opam-version: "1.2"
+opam-version: "2"
 maintainer: "David Kaloper Meršinjak <david@numm.org>"
 authors: ["David Kaloper Meršinjak <david@numm.org>"]
 homepage: "https://github.com/pqwy/cpuid"
@@ -7,9 +7,9 @@ license: "ISC"
 dev-repo: "https://github.com/pqwy/cpuid.git"
 bug-reports: "https://github.com/pqwy/cpuid/issues"
 tags: []
-available: [ ocaml-version >= "4.01.0" ]
 build: ["dune" "build" "-p" name "-j" jobs]
 depends: [
+  "ocaml" {>= "4.01.0"}
   "dune" {build}
   "result" ]
 depopts: []
