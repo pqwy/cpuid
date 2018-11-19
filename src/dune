@@ -1,0 +1,7 @@
+(library
+    (name cpuid)
+    (public_name cpuid)
+    (libraries result)
+    (c_names native/cpuid))
+
+(include_subdirs unqualified)
