@@ -3,10 +3,10 @@
 
 (** Detect CPU features.
 
-    {e %%VERSION%% — {{:%%PKG_HOMEPAGE%% }homepage}} *)
+    {e %%VERSION%% — {{: %%PKG_HOMEPAGE%%}homepage}} *)
 
 (** {1 Overview}
-    
+
     Cpuid provides runtime detection of CPU features through the x86 {b CPUID}
     instruction. Detection discovers the CPU {{!vendor}[vendor]} and a set of
     feature {{!flag}[flag]}s.
@@ -32,7 +32,7 @@
 
 type error = [ `Unsupported ]
 
-type 'a result = ('a, error) Result.result
+type nonrec 'a result = ('a, error) result
 
 type vendor = [
   (* CPU manufacturer *)
@@ -160,9 +160,9 @@ type flag = [
   | `BPEXT              (** data breakpoint extension *)
   | `PTSC               (** performance time-stamp counter *)
   | `PERFCTR_L2         (** L2 performance counter extensions *)
-  | `MWAITX             (** MWAIT extension ( MONITORX/MWAITX) *)
+  | `MWAITX             (** MWAIT extension (MONITORX/MWAITX) *)
   (* Level 0x00000007 (EBX) *)
-  | `FSGSBASE           (** {RD/WR}{FS/GS}BASE instructions*)
+  | `FSGSBASE           (** \{RD/WR\}\{FS/GS\}BASE instructions*)
   | `TSC_ADJUST         (** TSC adjustment MSR 0x3b *)
   | `BMI1               (** 1st group bit manipulation extensions *)
   | `HLE                (** Hardware Lock Elision *)

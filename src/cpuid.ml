@@ -17,7 +17,7 @@ external cpudetect_raw : unit -> raw option = "caml_cpuid_cpudetect"
 
 type error = [ `Unsupported ]
 
-type 'a result = ('a, error) Result.result
+type nonrec 'a result = ('a, error) result
 
 type vendor = [
   (* CPU manufacturer *)
@@ -547,7 +547,7 @@ let id () =
 
 let _id = lazy (id ())
 let q f = match Lazy.force _id with
-  Some id -> Result.Ok (f id) | _ -> Error `Unsupported
+  Some id -> Ok (f id) | _ -> Error `Unsupported
 
 let vendor () = q @@ fun id -> id.vendor
 let model () = q @@ fun id -> id.model
